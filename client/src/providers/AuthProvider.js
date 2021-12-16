@@ -30,7 +30,7 @@ const AuthProvider = (props) => {
 
   const handleLogout = async (navigate) => {
     try{
-    let data = await axios.delete('/api/auth/sigh_out')
+    let data = await axios.delete('/api/auth/sign_out')
     setUser(null)
     navigate('/login')
     } catch(err) {

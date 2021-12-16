@@ -1,18 +1,39 @@
-import { useContext } from "react"
+import axios from "axios"
+import { useContext, useEffect, useState } from "react"
 import { Navigate, Outlet } from "react-router-dom"
 import { AuthContext } from "../providers/AuthProvider"
 
 const RequireAuth = () => {
+  const [checkingAuthStatus, setCheckingAuthStatus] = useState(true)
   const auth = useContext(AuthContext)
-  if(!auth.authenticated) {
-    return <Navigate to='/' />
+
+  useEffect(()=>{
+    checkAuthStatus();
+  }, [])
+
+  const checkAuthStatus = async () => {
+    if(auth.authenticated || !localStorage.getItem('access-token')){
+      setCheckingAuthStatus(false)
+      return
+    }
+    try{
+      const data = await axios.get('/api/auth/validate_token')
+      auth.setUser(data.data.data)
+    } catch (err){
+      console.log("unable to validate token")
+    } finally{
+      setCheckingAuthStatus(false)
+    }
   }
-  return (
-    <div>
-      <h1> Hello, {auth.email}</h1>
-      <p>You are Authenticated</p>
-      <Outlet />
-    </div>
-  )
+  if(checkingAuthStatus) {
+    return(
+      <p>Checking for authentication</p>
+    )
+  }
+
+  if(!auth.authenticated) {
+    return <Navigate to='/login' />
+  }
+  return (<Outlet />)
 }
 export default RequireAuth;
