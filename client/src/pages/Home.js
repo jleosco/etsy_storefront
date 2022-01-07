@@ -7,11 +7,6 @@ const Home = () => {
   return(
     <div>
       <h1>Home</h1>
-      {JSON.stringify(auth)}
-      <br />
-      <br />
-      <button onClick={auth.handleLogin}>Login</button>
-      <button onClick={auth.handleLogout}>Logout</button>
     </div>
   );
 };
