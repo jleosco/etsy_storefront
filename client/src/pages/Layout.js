@@ -1,51 +1,27 @@
 import { useContext } from "react"
 import { Link, Outlet, useNavigate } from "react-router-dom"
 import { AuthContext } from "../providers/AuthProvider"
+import Button from '@mui/material/Button';
 
 const Layout = () => {
   const navigate = useNavigate()
   const {authenticated, handleLogout} = useContext(AuthContext)
-  const renderLogLinks = () => {
-    if(authenticated){
-      return(<button onClick={() => handleLogout(navigate)}>Logout</button>)
-    }else{
-      return(
-        <>
-          <div>
-            <Link to='/register'>Register</Link>
-           </div>
-          <div>
-            <Link to='/login'>Login</Link>
-          </div>
-        </>
-      )
-    }
-    
-  }
   return (
     <div>
-      <div style={styles.navbar}>
-        <div>
+      <div style={{ border: '1px solid black'}}>
+        <Button>
           <Link to='/'>Home</Link>
-        </div>
-        <div>
-          <Link to='/public'>Public</Link>
-        </div>
-        <div>
-          <Link to='/protected'>Protected</Link>
-        </div>
-      {renderLogLinks()}
+        </Button>
+        <Button>
+          <Link to='/products'>Products</Link>
+        </Button>
+        <Button>
+          <Link to='/categories'>Categories</Link>
+        </Button>
     </div>
     <Outlet />
-    </div>
+  </div>
   )
-}
-
-const styles = {
-  navbar: {
-    display: "flex",
-    border: "1px solid",
-  }
 }
 
 export default Layout;
